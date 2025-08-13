@@ -1,0 +1,29 @@
+{
+  "FunctionName": "message-api-proxy",
+  "Description": "Message API to OpenAI compatible API proxy with Basic Auth on Lambda (LWA + response_stream)",
+  "Role": "arn:aws:iam::<YOUR_ACCOUNT_ID>:role/<YOUR_LAMBDA_ROLE>",
+  "Runtime": "python3.12",
+  "Architectures": ["arm64"],
+  "Handler": "run.sh",
+  "Timeout": 900,
+  "MemorySize": 1024,
+  "Environment": {
+    "Variables": {
+      "AWS_LAMBDA_EXEC_WRAPPER": "/opt/bootstrap",
+      "AWS_LWA_INVOKE_MODE": "response_stream",
+      "AWS_LWA_PORT": "8080",
+      "AWS_LWA_READINESS_CHECK_PATH": "/health",
+      "PORT": "8080",
+
+      "BASIC_AUTH_USER": "demo",
+      "BASIC_AUTH_PASS": "demo",
+
+      "UPSTREAM_API_BASE": "https://api.openai.com/v1",
+      "UPSTREAM_API_KEY": "sk-your-openai-api-key",
+      "UPSTREAM_MODEL": "gpt-4o-mini"
+    }
+  },
+  "Layers": [
+    "arn:aws:lambda:ap-northeast-1:753240598075:layer:LambdaAdapterLayerArm64:25"
+  ]
+}

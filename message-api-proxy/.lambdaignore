@@ -1,0 +1,36 @@
+# Python virtual environment
+.venv/
+venv/
+env/
+
+# uv lock file
+uv.lock
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Archives
+*.zip
+*.tar.gz
+
+# Scripts directory (not needed in Lambda)
+scripts/
+
+# Development files
+.git/
+.gitignore
+.env
+*.log
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+_deps/
+.uv.requirements.txt

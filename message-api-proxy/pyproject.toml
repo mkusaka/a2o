@@ -1,0 +1,15 @@
+[project]
+name = "message-api-proxy"
+version = "0.1.0"
+description = "Message API to OpenAI compatible API proxy"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.104.0",
+  "uvicorn[standard]>=0.24.0",
+  "httpx>=0.25.0",
+  "pydantic>=2.5.0"
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
