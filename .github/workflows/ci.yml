@@ -31,9 +31,8 @@ jobs:
     - name: Lint with Ruff  
       run: uv run ruff check .
 
-    # TODO: Re-enable after fixing type issues
-    # - name: Type check with Pyright
-    #   run: uv run pyright --warnings
+    - name: Type check with mypy
+      run: uv run mypy .
 
     - name: Test with pytest
       run: uv run pytest tests/ -v --tb=short

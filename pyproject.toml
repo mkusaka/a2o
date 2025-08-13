@@ -16,7 +16,7 @@ test = [
 ]
 dev = [
   "ruff>=0.8.0",
-  "pyright>=1.1.390"
+  "mypy>=1.8.0"
 ]
 
 [tool.ruff]
@@ -39,13 +39,12 @@ ignore = [
   "C901",  # too complex
 ]
 
-[tool.pyright]
-include = ["*.py", "api/**/*.py", "middleware.py"]
-exclude = ["tests/**/*"]
-venvPath = "."
-venv = ".venv"
-reportMissingImports = true
-reportMissingTypeStubs = false
-reportUnusedImport = false
-reportUnusedVariable = false
-pythonVersion = "3.11"
+[tool.mypy]
+python_version = "3.11"
+files = ["*.py", "api", "middleware.py"]
+exclude = ["tests/"]
+strict = false
+warn_return_any = false
+warn_unused_configs = true
+disallow_untyped_defs = false
+check_untyped_defs = true
