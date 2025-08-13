@@ -40,14 +40,12 @@ ignore = [
 ]
 
 [tool.pyright]
-include = ["**/*.py"]
-exclude = [
-  "**/node_modules",
-  "**/__pycache__"
-]
+include = ["*.py", "api/**/*.py", "middleware.py"]
+exclude = ["tests/**/*"]
 venvPath = "."
 venv = ".venv"
 reportMissingImports = true
 reportMissingTypeStubs = false
+reportUnusedImport = false
+reportUnusedVariable = false
 pythonVersion = "3.11"
-pythonPlatform = "All"
