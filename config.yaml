@@ -1,0 +1,9 @@
+model_list:
+  - model_name: "openai-compat"
+    litellm_params:
+      model: "gpt-4o-mini"
+      api_base: "os.environ/OPENAI_COMPAT_BASE"
+      api_key: "os.environ/OPENAI_COMPAT_API_KEY"
+
+general_settings:
+  drop_params: true
