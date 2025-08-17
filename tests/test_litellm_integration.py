@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 from starlette.testclient import TestClient
 
-from middleware import BasicAuthMiddleware
+from lambda_handler import BasicAuthMiddleware
 
 # Mock LiteLLM responses
 OPENAI_CHAT_COMPLETION_RESPONSE = {
@@ -120,7 +120,8 @@ class TestLiteLLMIntegration:
         return {"authorization": f"Basic {credentials}"}
 
     @patch.dict(
-        os.environ, {"BASIC_AUTH_USER": "testuser", "BASIC_AUTH_PASS": "testpass"}
+        os.environ,
+        {"BASIC_AUTH_USERNAME": "testuser", "BASIC_AUTH_PASSWORD": "testpass"},
     )
     def test_openai_chat_completions_non_streaming(
         self, client, auth_headers, snapshot
@@ -143,7 +144,8 @@ class TestLiteLLMIntegration:
         )
 
     @patch.dict(
-        os.environ, {"BASIC_AUTH_USER": "testuser", "BASIC_AUTH_PASS": "testpass"}
+        os.environ,
+        {"BASIC_AUTH_USERNAME": "testuser", "BASIC_AUTH_PASSWORD": "testpass"},
     )
     def test_openai_chat_completions_streaming(self, client, auth_headers, snapshot):
         """Test OpenAI compatible endpoint with streaming"""
@@ -165,7 +167,8 @@ class TestLiteLLMIntegration:
         snapshot.assert_match(streaming_content, "openai_streaming_response.txt")
 
     @patch.dict(
-        os.environ, {"BASIC_AUTH_USER": "testuser", "BASIC_AUTH_PASS": "testpass"}
+        os.environ,
+        {"BASIC_AUTH_USERNAME": "testuser", "BASIC_AUTH_PASSWORD": "testpass"},
     )
     def test_anthropic_messages_non_streaming(self, client, auth_headers, snapshot):
         """Test Anthropic endpoint without streaming"""
@@ -186,7 +189,8 @@ class TestLiteLLMIntegration:
         )
 
     @patch.dict(
-        os.environ, {"BASIC_AUTH_USER": "testuser", "BASIC_AUTH_PASS": "testpass"}
+        os.environ,
+        {"BASIC_AUTH_USERNAME": "testuser", "BASIC_AUTH_PASSWORD": "testpass"},
     )
     def test_anthropic_messages_streaming(self, client, auth_headers, snapshot):
         """Test Anthropic endpoint with streaming"""
@@ -208,7 +212,8 @@ class TestLiteLLMIntegration:
         snapshot.assert_match(streaming_content, "anthropic_streaming_response.txt")
 
     @patch.dict(
-        os.environ, {"BASIC_AUTH_USER": "testuser", "BASIC_AUTH_PASS": "testpass"}
+        os.environ,
+        {"BASIC_AUTH_USERNAME": "testuser", "BASIC_AUTH_PASSWORD": "testpass"},
     )
     def test_openai_endpoint_without_auth(self, client):
         """Test OpenAI endpoint returns 401 without auth"""
@@ -220,10 +225,11 @@ class TestLiteLLMIntegration:
         response = client.post("/v1/chat/completions", json=payload)
 
         assert response.status_code == 401
-        assert response.headers["WWW-Authenticate"] == "Basic"
+        assert response.headers["WWW-Authenticate"] == 'Basic realm="LiteLLM Proxy"'
 
     @patch.dict(
-        os.environ, {"BASIC_AUTH_USER": "testuser", "BASIC_AUTH_PASS": "testpass"}
+        os.environ,
+        {"BASIC_AUTH_USERNAME": "testuser", "BASIC_AUTH_PASSWORD": "testpass"},
     )
     def test_anthropic_endpoint_without_auth(self, client):
         """Test Anthropic endpoint returns 401 without auth"""
@@ -235,10 +241,11 @@ class TestLiteLLMIntegration:
         response = client.post("/anthropic/v1/messages", json=payload)
 
         assert response.status_code == 401
-        assert response.headers["WWW-Authenticate"] == "Basic"
+        assert response.headers["WWW-Authenticate"] == 'Basic realm="LiteLLM Proxy"'
 
     @patch.dict(
-        os.environ, {"BASIC_AUTH_USER": "testuser", "BASIC_AUTH_PASS": "testpass"}
+        os.environ,
+        {"BASIC_AUTH_USERNAME": "testuser", "BASIC_AUTH_PASSWORD": "testpass"},
     )
     def test_health_endpoint_bypasses_auth(self, client):
         """Test health endpoint bypasses authentication"""
@@ -248,7 +255,8 @@ class TestLiteLLMIntegration:
         assert response.json() == {"status": "ok"}
 
     @patch.dict(
-        os.environ, {"BASIC_AUTH_USER": "testuser", "BASIC_AUTH_PASS": "testpass"}
+        os.environ,
+        {"BASIC_AUTH_USERNAME": "testuser", "BASIC_AUTH_PASSWORD": "testpass"},
     )
     def test_openai_endpoint_valid_request(self, client, auth_headers):
         """Test OpenAI endpoint with valid request structure"""
@@ -264,7 +272,8 @@ class TestLiteLLMIntegration:
         assert response.status_code == 200
 
     @patch.dict(
-        os.environ, {"BASIC_AUTH_USER": "testuser", "BASIC_AUTH_PASS": "testpass"}
+        os.environ,
+        {"BASIC_AUTH_USERNAME": "testuser", "BASIC_AUTH_PASSWORD": "testpass"},
     )
     def test_anthropic_endpoint_valid_request(self, client, auth_headers):
         """Test Anthropic endpoint with valid request structure"""
