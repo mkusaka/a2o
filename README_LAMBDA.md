@@ -7,20 +7,21 @@ Docker image-based deployment of LiteLLM Proxy with Basic Authentication on AWS 
 1. AWS Account with appropriate permissions
 2. AWS CLI configured (`aws configure`)
 3. Docker installed and running
-4. Node.js and npm installed
-5. Serverless Framework installed:
+4. Node.js 18+ and pnpm installed:
    ```bash
-   npm install -g serverless
+   npm install -g pnpm@9.6.0
    ```
 
 ## Setup
 
-### 1. Install Serverless Framework and plugins
+### 1. Install dependencies
 
 ```bash
-npm init -y
-npm install --save-dev serverless serverless-python-requirements
+# Install project dependencies including Serverless Framework v4
+pnpm install
 ```
+
+> **Note**: Serverless Framework v4 is installed locally as a dependency for version consistency.
 
 ### 2. Configure environment variables
 
@@ -35,6 +36,9 @@ Edit `.env` with your API keys and credentials:
 - `BASIC_AUTH_PASSWORD`: Password for Basic Auth
 - `ANTHROPIC_API_KEY`: Your Anthropic API key
 - `OPENAI_API_KEY`: Your OpenAI API key (optional)
+- `AWS_REGION`: AWS region (default: us-east-1)
+
+> **Note**: Serverless Framework v4 automatically loads `.env` files without additional configuration.
 
 ### 3. Configure AWS ECR
 
@@ -62,11 +66,11 @@ docker run -p 8000:8080 \
 ### Deploy to AWS Lambda
 
 ```bash
-# Load environment variables
-export $(cat .env | xargs)
+# Deploy using pnpm script (automatically loads .env)
+pnpm deploy
 
-# Deploy using Serverless Framework
-serverless deploy --verbose
+# Or for specific stage
+pnpm sls deploy --stage production
 ```
 
 The deployment will:
@@ -134,13 +138,13 @@ print(response.choices[0].message.content)
 ### View Lambda logs
 
 ```bash
-serverless logs -f proxy --tail
+pnpm logs
 ```
 
 ### View metrics
 
 ```bash
-serverless metrics -f proxy
+pnpm sls metrics -f proxy
 ```
 
 ## Update and Redeploy
@@ -148,13 +152,14 @@ serverless metrics -f proxy
 After making changes:
 
 ```bash
-serverless deploy function -f proxy
+# Quick function update
+pnpm deploy:function
 ```
 
 For full redeploy:
 
 ```bash
-serverless deploy
+pnpm deploy
 ```
 
 ## Cleanup
@@ -162,7 +167,7 @@ serverless deploy
 To remove all resources:
 
 ```bash
-serverless remove
+pnpm remove
 ```
 
 This will delete:

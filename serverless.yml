@@ -1,9 +1,13 @@
 service: litellm-proxy-lambda
 
+# Serverless Framework v4 - .env files are loaded automatically
+# Stage-specific .env files: .env.${sls:stage} will be loaded if present
+
 provider:
   name: aws
   runtime: python3.11
-  region: us-east-1
+  region: ${env:AWS_REGION, 'us-east-1'}
+  stage: ${opt:stage, 'dev'}
   ecr:
     images:
       litellm-image:
@@ -38,10 +42,4 @@ functions:
     memorySize: 1024
     reservedConcurrency: 10
 
-plugins:
-  - serverless-python-requirements
-
-custom:
-  pythonRequirements:
-    dockerizePip: true
-    layer: false
+# Docker image deployment - no Python requirements plugin needed

@@ -2,16 +2,18 @@
   "name": "litellm-proxy-lambda",
   "version": "1.0.0",
   "description": "LiteLLM Proxy deployment on AWS Lambda with Docker",
+  "packageManager": "pnpm@9.6.0",
   "scripts": {
-    "deploy": "serverless deploy --verbose",
-    "deploy:function": "serverless deploy function -f proxy",
-    "logs": "serverless logs -f proxy --tail",
-    "remove": "serverless remove",
-    "info": "serverless info"
+    "sls": "serverless",
+    "deploy": "pnpm sls deploy --verbose",
+    "deploy:function": "pnpm sls deploy function -f proxy",
+    "logs": "pnpm sls logs -f proxy --tail",
+    "remove": "pnpm sls remove",
+    "info": "pnpm sls info",
+    "install:deps": "pnpm install --frozen-lockfile"
   },
   "devDependencies": {
-    "serverless": "^3.38.0",
-    "serverless-python-requirements": "^6.0.1"
+    "serverless": "^4.4.3"
   },
   "keywords": [
     "litellm",
