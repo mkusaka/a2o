@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "curl -LsSf https://astral.sh/uv/install.sh | sh && $HOME/.local/bin/uv export --no-dev --format requirements-txt > requirements.txt && $HOME/.local/bin/uv pip install -r requirements.txt",
+  "installCommand": "curl -LsSf https://astral.sh/uv/install.sh | sh && $HOME/.local/bin/uv export --no-dev --format requirements-txt > requirements.txt && $HOME/.local/bin/uv pip install --system -r requirements.txt",
   "buildCommand": "echo 'Dependencies installed via installCommand'",
   "functions": {
     "api/*.py": {
