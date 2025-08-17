@@ -6,11 +6,11 @@ from middleware import BasicAuthMiddleware
 app = _app
 app.add_middleware(BasicAuthMiddleware)
 
-# Add simple health check endpoint
+# Add simple health check endpoint (relative to /api/ base path)
 @app.get("/health")
 async def health_check():
     return {"status": "healthy", "service": "litellm-vercel-proxy"}
 
 @app.get("/")
 async def root():
-    return {"message": "LiteLLM Vercel Proxy", "health": "/health", "docs": "/docs"}
+    return {"message": "LiteLLM Vercel Proxy", "health": "/api/health", "docs": "/api/docs"}
