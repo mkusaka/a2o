@@ -13,8 +13,6 @@ provider:
       litellm-image:
         path: ./
         file: Dockerfile
-        buildArgs:
-          PLATFORM: linux/amd64
   environment:
     # Basic Auth configuration
     BASIC_AUTH_USERNAME: ${env:BASIC_AUTH_USERNAME}
