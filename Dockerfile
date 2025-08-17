@@ -9,12 +9,16 @@ RUN yum update -y && \
     yum install -y gcc gcc-c++ make && \
     yum clean all
 
-# Python依存関係のインストール
-# litellm[proxy]で全ての依存関係を含む完全インストール
-# mangumはLambdaハンドラーアダプターとして必要
-RUN pip install --no-cache-dir \
-    litellm[proxy] \
-    mangum
+# uvのインストール
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+ENV PATH="/root/.local/bin:${PATH}"
+
+# 依存関係ファイルのコピー
+COPY pyproject.toml uv.lock ${LAMBDA_TASK_ROOT}/
+
+# uvを使用してlockfileから依存関係をインストール
+# --systemフラグでシステムPythonにインストール
+RUN uv sync --frozen --no-dev --system
 
 # 設定ファイルのコピー
 COPY config.yaml ${LAMBDA_TASK_ROOT}/
