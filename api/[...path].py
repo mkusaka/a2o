@@ -10,7 +10,9 @@ class BasicAuthMiddleware(BaseHTTPMiddleware):
     
     async def dispatch(self, request, call_next):
         # Allow health checks and root endpoint to pass through
-        if request.url.path.endswith("/health") or request.url.path == "/":
+        # Note: Vercel passes relative paths to the function
+        if (request.url.path in ["/", "/health"] or 
+            request.url.path.endswith("/health")):
             return await call_next(request)
         
         # Read environment variables dynamically for testing
