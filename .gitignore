@@ -224,4 +224,3 @@ pnpm-debug.log*
 samconfig.toml
 
 # Docker
-.dockerignore
