@@ -1,30 +1,30 @@
-# AWS Lambda用のPython 3.11ベースイメージ
+# Python 3.11 base image for AWS Lambda
 FROM public.ecr.aws/lambda/python:3.11
 
-# 作業ディレクトリ設定
+# Set working directory
 WORKDIR ${LAMBDA_TASK_ROOT}
 
-# システムパッケージのインストール
+# Install system packages
 RUN yum update -y && \
-    yum install -y gcc gcc-c++ make && \
+    yum install -y gcc gcc-c++ make tar gzip && \
     yum clean all
 
-# uvのインストール
+# Install uv package manager
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 ENV PATH="/root/.local/bin:${PATH}"
 
-# 依存関係ファイルのコピー
+# Copy dependency files
 COPY pyproject.toml uv.lock ${LAMBDA_TASK_ROOT}/
 
-# uvを使用してlockfileから依存関係をインストール
-# --systemフラグでシステムPythonにインストール
+# Install dependencies from lockfile using uv
+# --system flag installs to system Python
 RUN uv sync --frozen --no-dev --system
 
-# 設定ファイルのコピー
+# Copy configuration file
 COPY config.yaml ${LAMBDA_TASK_ROOT}/
 
-# Lambda handler用のPythonファイルをコピー
+# Copy Lambda handler Python file
 COPY lambda_handler.py ${LAMBDA_TASK_ROOT}/
 
-# Lambdaハンドラーの指定
+# Specify Lambda handler
 CMD ["lambda_handler.handler"]

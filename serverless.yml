@@ -16,10 +16,10 @@ provider:
         buildArgs:
           PLATFORM: linux/amd64
   environment:
-    # Basic Auth設定
+    # Basic Auth configuration
     BASIC_AUTH_USERNAME: ${env:BASIC_AUTH_USERNAME}
     BASIC_AUTH_PASSWORD: ${env:BASIC_AUTH_PASSWORD}
-    # LiteLLM設定
+    # LiteLLM configuration
     DATABASE_URL: ${env:DATABASE_URL, ''}
     STORE_MODEL_IN_DB: ${env:STORE_MODEL_IN_DB, 'False'}
     MASTER_KEY: ${env:MASTER_KEY, ''}
