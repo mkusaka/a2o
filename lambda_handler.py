@@ -6,11 +6,19 @@ import base64
 import os
 import sys
 
-# Set config path for LiteLLM
-os.environ["CONFIG_FILE_PATH"] = os.path.join(
+# Set config path for LiteLLM before importing
+CONFIG_FILE_PATH = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "config.yaml"
 )
 
+# Set the environment variable that LiteLLM expects
+os.environ["LITELLM_CONFIG_PATH"] = CONFIG_FILE_PATH
+
+# Also try the standard CONFIG_FILE_PATH
+os.environ["CONFIG_FILE_PATH"] = CONFIG_FILE_PATH
+
+# Import LiteLLM proxy server
+# The proxy server should automatically load the config from environment variable
 from litellm.proxy.proxy_server import app as litellm_app
 from mangum import Mangum
 from starlette.middleware.base import BaseHTTPMiddleware
