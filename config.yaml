@@ -1,9 +1,17 @@
+# LiteLLM Configuration File
+# Reference: https://docs.litellm.ai/docs/proxy/configs
+
 model_list:
-  - model_name: "openai-compat"
+  - model_name: "gpt-4o-mini"
     litellm_params:
       model: "gpt-4o-mini"
-      api_base: "os.environ/OPENAI_COMPAT_BASE"
-      api_key: "os.environ/OPENAI_COMPAT_API_KEY"
+      api_key: "os.environ/OPENAI_API_KEY"
+  
+  - model_name: "claude-3-5-sonnet"
+    litellm_params:
+      model: "claude-3-5-sonnet-20241022"
+      api_key: "os.environ/ANTHROPIC_API_KEY"
 
 general_settings:
   drop_params: true
+  master_key: "os.environ/LITELLM_MASTER_KEY"  # Optional master key for admin access

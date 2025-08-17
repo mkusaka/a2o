@@ -4,6 +4,12 @@ AWS Lambda handler for LiteLLM Proxy with Basic Authentication
 
 import base64
 import os
+import sys
+
+# Set config path for LiteLLM
+os.environ["CONFIG_FILE_PATH"] = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "config.yaml"
+)
 
 from litellm.proxy.proxy_server import app as litellm_app
 from mangum import Mangum
