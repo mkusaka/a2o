@@ -9,8 +9,8 @@ class BasicAuthMiddleware(BaseHTTPMiddleware):
     """Basic Authentication Middleware for protecting endpoints"""
 
     async def dispatch(self, request, call_next):
-        # Allow health checks and similar endpoints to pass through
-        if request.url.path.endswith("/health"):
+        # Allow health checks and root endpoint to pass through
+        if request.url.path.endswith("/health") or request.url.path == "/":
             return await call_next(request)
 
         # Read environment variables dynamically for testing
