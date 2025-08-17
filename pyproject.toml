@@ -3,7 +3,10 @@ name = "litellm-vercel"
 version = "0.1.0"
 requires-python = ">=3.11"
 dependencies = [
-  "litellm[proxy]>=1.42.0"
+  "litellm>=1.42.0",
+  "fastapi>=0.115.0",
+  "uvicorn>=0.29.0",
+  "starlette>=0.46.0",
 ]
 
 [project.optional-dependencies]
