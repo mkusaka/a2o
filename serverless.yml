@@ -1,0 +1,47 @@
+service: litellm-proxy-lambda
+
+provider:
+  name: aws
+  runtime: python3.11
+  region: us-east-1
+  ecr:
+    images:
+      litellm-image:
+        path: ./
+        file: Dockerfile
+        buildArgs:
+          PLATFORM: linux/amd64
+  environment:
+    # Basic Auth設定
+    BASIC_AUTH_USERNAME: ${env:BASIC_AUTH_USERNAME}
+    BASIC_AUTH_PASSWORD: ${env:BASIC_AUTH_PASSWORD}
+    # LiteLLM設定
+    DATABASE_URL: ${env:DATABASE_URL, ''}
+    STORE_MODEL_IN_DB: ${env:STORE_MODEL_IN_DB, 'False'}
+    MASTER_KEY: ${env:MASTER_KEY, ''}
+    OPENAI_API_KEY: ${env:OPENAI_API_KEY, ''}
+    ANTHROPIC_API_KEY: ${env:ANTHROPIC_API_KEY, ''}
+    LITELLM_LOG: ${env:LITELLM_LOG, 'INFO'}
+
+functions:
+  proxy:
+    image:
+      name: litellm-image
+    events:
+      - httpApi:
+          path: /{proxy+}
+          method: ANY
+      - httpApi:
+          path: /
+          method: ANY
+    timeout: 30
+    memorySize: 1024
+    reservedConcurrency: 10
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    layer: false

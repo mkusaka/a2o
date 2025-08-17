@@ -1,0 +1,27 @@
+{
+  "name": "litellm-proxy-lambda",
+  "version": "1.0.0",
+  "description": "LiteLLM Proxy deployment on AWS Lambda with Docker",
+  "scripts": {
+    "deploy": "serverless deploy --verbose",
+    "deploy:function": "serverless deploy function -f proxy",
+    "logs": "serverless logs -f proxy --tail",
+    "remove": "serverless remove",
+    "info": "serverless info"
+  },
+  "devDependencies": {
+    "serverless": "^3.38.0",
+    "serverless-python-requirements": "^6.0.1"
+  },
+  "keywords": [
+    "litellm",
+    "proxy",
+    "lambda",
+    "aws",
+    "docker",
+    "openai",
+    "anthropic"
+  ],
+  "author": "",
+  "license": "MIT"
+}
