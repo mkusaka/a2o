@@ -1,26 +1,10 @@
 [project]
-name = "litellm-vercel"
+name = "litellm-lambda-proxy"
 version = "0.1.0"
 requires-python = ">=3.11"
 dependencies = [
-  "litellm>=1.42.0",
-  "fastapi>=0.115.0",
-  "uvicorn>=0.29.0",
-  "starlette>=0.46.0",
-  "backoff>=2.2.0",
-  "pydantic>=2.0.0",
-  "pydantic-settings>=2.0.0",
-  "python-dotenv>=1.0.0",
-  "httpx>=0.25.0",
-  "orjson>=3.9.0",
-  "pyyaml>=6.0.0",
-  "apscheduler>=3.10.0",
-  "cryptography>=41.0.0",
-  "pyjwt>=2.8.0",
-  "python-multipart>=0.0.6",
-  "websockets>=12.0",
-  "email-validator>=2.0.0",
-  "fastapi-sso>=0.16.0",
+  "litellm[proxy]",
+  "mangum",
 ]
 
 [project.optional-dependencies]
@@ -58,7 +42,7 @@ ignore = [
 
 [tool.mypy]
 python_version = "3.11"
-files = ["*.py", "api", "middleware.py"]
+files = ["*.py", "lambda_handler.py"]
 exclude = ["tests/"]
 strict = false
 warn_return_any = false
