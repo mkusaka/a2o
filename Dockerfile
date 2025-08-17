@@ -4,12 +4,7 @@
 FROM ghcr.io/astral-sh/uv:0.5.14 AS uv
 
 # Stage 2: Build dependencies
-FROM public.ecr.aws/lambda/python:3.11 AS builder
-
-# Environment variables for uv optimization
-ENV UV_COMPILE_BYTECODE=1 \
-    UV_NO_INSTALLER_METADATA=1 \
-    UV_LINK_MODE=copy
+FROM --platform=linux/amd64 public.ecr.aws/lambda/python:3.11 AS builder
 
 # Work directory
 WORKDIR ${LAMBDA_TASK_ROOT}
@@ -17,14 +12,17 @@ WORKDIR ${LAMBDA_TASK_ROOT}
 # Copy dependency files
 COPY pyproject.toml uv.lock ./
 
-# Install dependencies using uv (mounted from stage 1)
+# Install dependencies using uv
+# Export to requirements.txt and use pip with specific options for problematic packages
 RUN --mount=from=uv,source=/uv,target=/usr/local/bin/uv \
     --mount=type=cache,target=/root/.cache/uv \
     /usr/local/bin/uv export --frozen --no-emit-workspace --no-dev -o requirements.txt && \
-    /usr/local/bin/uv pip install -r requirements.txt --system --no-cache
+    pip install --no-cache-dir --prefer-binary \
+        --only-binary=polars,pandas,numpy,scipy,scikit-learn,tokenizers \
+        -r requirements.txt
 
 # Stage 3: Final runtime image
-FROM public.ecr.aws/lambda/python:3.11
+FROM --platform=linux/amd64 public.ecr.aws/lambda/python:3.11
 
 # Set working directory
 WORKDIR ${LAMBDA_TASK_ROOT}
