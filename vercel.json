@@ -5,7 +5,7 @@
   "functions": {
     "api/*.py": {
       "maxDuration": 60,
-      "includeFiles": "config.yaml"
+      "includeFiles": "{config.yaml,middleware.py}"
     }
   },
   "regions": ["hnd1"]
