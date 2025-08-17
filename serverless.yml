@@ -37,7 +37,7 @@ functions:
           path: /
           method: ANY
     timeout: 30
-    memorySize: 1024
+    memorySize: 2048  # Increase memory for faster initialization
     reservedConcurrency: 10
 
 # Docker image deployment - no Python requirements plugin needed
