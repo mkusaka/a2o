@@ -1,0 +1,53 @@
+# Git
+.git/
+.gitignore
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+.venv/
+venv/
+ENV/
+
+# Node
+node_modules/
+package.json
+package-lock.json
+pnpm-lock.yaml
+pnpm-workspace.yaml
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Development
+.mypy_cache/
+.ruff_cache/
+
+# Serverless
+.serverless/
+serverless.yml
+
+# Documentation
+README.md
+*.md
+
+# Environment
+.env
+.env.*
+
+# Build artifacts
+dist/
+build/
