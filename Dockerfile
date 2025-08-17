@@ -10,11 +10,11 @@ RUN yum update -y && \
     yum clean all
 
 # Python依存関係のインストール
-# litellm[proxy]でproxy機能を含む完全インストール
+# litellm[proxy]で全ての依存関係を含む完全インストール
+# mangumはLambdaハンドラーアダプターとして必要
 RUN pip install --no-cache-dir \
-    litellm[proxy]>=1.42.0 \
-    mangum>=0.17.0 \
-    uvloop>=0.19.0
+    litellm[proxy] \
+    mangum
 
 # 設定ファイルのコピー
 COPY config.yaml ${LAMBDA_TASK_ROOT}/
