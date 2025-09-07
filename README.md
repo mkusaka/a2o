@@ -83,6 +83,52 @@ curl -N http://localhost:4000/v1/messages \
   }'
 ```
 
+### Claude Code Integration
+
+Use a2o proxy with Claude Code to access OpenAI-compatible models through Anthropic's API format:
+
+#### Method 1: Environment Variables
+```bash
+# Start a2o proxy first
+make run  # or docker run command
+
+# Configure Claude Code
+export ANTHROPIC_BASE_URL=http://localhost:4000
+export ANTHROPIC_AUTH_TOKEN=your-openai-api-key
+export ANTHROPIC_MODEL=gpt-4o-mini
+
+# Start Claude Code
+claude
+```
+
+#### Method 2: Settings File
+Configure `~/.claude/settings.json`:
+```json
+{
+  "env": {
+    "ANTHROPIC_BASE_URL": "http://localhost:4000",
+    "ANTHROPIC_AUTH_TOKEN": "your-openai-api-key",
+    "ANTHROPIC_MODEL": "gpt-4o-mini",
+    "ANTHROPIC_SMALL_FAST_MODEL": "gpt-4o-mini"
+  }
+}
+```
+
+#### Using Different Providers
+```bash
+# For OpenAI models
+export ANTHROPIC_AUTH_TOKEN=$OPENAI_API_KEY
+export ANTHROPIC_MODEL=gpt-4o-mini
+
+# For Cerebras models (configure a2o-endpoint header)
+export ANTHROPIC_AUTH_TOKEN=$CEREBRAS_API_KEY
+export ANTHROPIC_MODEL=qwen-3-coder-480b
+# Note: You'll need to modify the proxy to set default endpoint headers
+
+# Check model status in Claude Code
+/status
+```
+
 ## Configuration
 
 ### Model Configuration
