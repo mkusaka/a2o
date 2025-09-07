@@ -53,6 +53,7 @@ make stop     # Stop the proxy
 
 Send requests to the proxy using Anthropic's message format:
 
+### OpenAI Example
 ```bash
 curl -N http://localhost:4000/v1/messages \
   -H 'content-type: application/json' \
@@ -63,6 +64,21 @@ curl -N http://localhost:4000/v1/messages \
     "model": "gpt-4o-mini",
     "max_tokens": 100,
     "messages": [{"role":"user","content":"Hello!"}],
+    "stream": true
+  }'
+```
+
+### Cerebras Example
+```bash
+curl -N http://localhost:4000/v1/messages \
+  -H 'content-type: application/json' \
+  -H 'anthropic-version: 2023-06-01' \
+  -H "authorization: Bearer $CEREBRAS_API_KEY" \
+  -H "a2o-endpoint: https://api.cerebras.ai/v1" \
+  -d '{
+    "model": "qwen-3-coder-480b",
+    "max_tokens": 100,
+    "messages": [{"role":"user","content":"Tell a one-line joke"}],
     "stream": true
   }'
 ```
