@@ -1,10 +1,14 @@
 [project]
 name = "a2o-proxy"
-version = "0.1.0"
-description = "Anthropic to OpenAI format proxy"
+version = "2.0.0"
+description = "Anthropic to OpenAI format proxy with FastAPI"
 requires-python = ">=3.11"
 dependencies = [
-    "litellm[proxy]>=1.0.0",
+    "fastapi>=0.115.5",
+    "uvicorn[standard]>=0.32.1",
+    "litellm>=1.55.15",
+    "httpx>=0.28.1",
+    "pydantic>=2.10.4",
 ]
 
 [tool.uv]

@@ -1,13 +1,20 @@
-.PHONY: install run clean stop test
+.PHONY: install install-fastapi run run-fastapi clean stop test
 
 install:
 	uv venv
 	uv pip install -e .
 
+install-fastapi:
+	uv venv
+	. .venv/bin/activate && uv pip install -r requirements.txt
+
 run:
 	export LITELLM_MASTER_KEY=$${LITELLM_MASTER_KEY:-dev-local} && \
 	export OPENAI_API_KEY=$${OPENAI_API_KEY} && \
 	litellm --config config.yaml --port 4000 --detailed_debug
+
+run-fastapi:
+	./run_fastapi.sh
 
 test:
 	curl -N http://localhost:4000/v1/messages \
@@ -24,6 +31,7 @@ test:
 
 stop:
 	pkill -f "litellm --config config.yaml" || true
+	pkill -f "uvicorn app:app" || true
 
 clean:
 	rm -rf .venv __pycache__ *.egg-info

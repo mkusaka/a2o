@@ -1,6 +1,10 @@
 # a2o - Anthropic to OpenAI Proxy
 
-A proxy server that translates Anthropic's `/v1/messages` format to OpenAI-compatible API format, built with LiteLLM.
+A proxy server that translates Anthropic's `/v1/messages` format to OpenAI-compatible API format. 
+
+Available in two implementations:
+- **FastAPI version** (Recommended): Full control over routing and provider logic
+- **LiteLLM Proxy version**: Simple configuration-based approach
 
 ## Features
 
@@ -13,40 +17,33 @@ A proxy server that translates Anthropic's `/v1/messages` format to OpenAI-compa
 
 ## Quick Start
 
-### Using Docker
+### FastAPI Version (Recommended)
 
 ```bash
-# Build and run
+# Install and run
+make install-fastapi
+make run-fastapi
+
+# Or manually
+uv venv
+source .venv/bin/activate
+uv pip install -r requirements.txt
+python app.py
+```
+
+### LiteLLM Proxy Version
+
+```bash
+# Install and run
+make install
+make run
+
+# Or with Docker
 docker build -t a2o-proxy .
 docker run --rm -p 4000:4000 \
   -e LITELLM_MASTER_KEY=dev-local \
   -e OPENAI_API_KEY=your-api-key \
   a2o-proxy
-```
-
-### Local Installation with uv
-
-```bash
-# Install dependencies
-uv venv
-source .venv/bin/activate
-uv pip install 'litellm[proxy]'
-
-# Set environment variables
-export LITELLM_MASTER_KEY=dev-local
-export OPENAI_API_KEY=your-api-key
-
-# Run the proxy
-litellm --config config.yaml --port 4000
-```
-
-### Using Makefile
-
-```bash
-make install  # First time setup
-make run      # Start the proxy
-make test     # Run test request
-make stop     # Stop the proxy
 ```
 
 ## Usage
@@ -82,6 +79,8 @@ curl -N http://localhost:4000/v1/messages \
     "stream": true
   }'
 ```
+
+**Note**: The `authorization` header is required for all requests. Use `Bearer YOUR_API_KEY` format.
 
 ### Claude Code Integration
 
@@ -200,19 +199,29 @@ The proxy outputs structured JSON logs to stdout:
 
 ```
 .
-├── config.yaml           # LiteLLM configuration
-├── custom_callbacks.py   # Custom adapter and logging
-├── Dockerfile           # Docker container definition
-├── Makefile            # Build and run commands
-├── pyproject.toml      # Python package configuration
-└── run.sh              # Local run script
+├── app.py                # FastAPI application (new)
+├── requirements.txt      # FastAPI dependencies (new)
+├── run_fastapi.sh       # FastAPI run script (new)
+├── config.yaml          # LiteLLM configuration
+├── custom_callbacks.py  # LiteLLM adapter and logging
+├── Dockerfile          # Docker container definition
+├── Makefile           # Build and run commands
+├── pyproject.toml     # Python package configuration
+└── run.sh             # LiteLLM run script
 ```
 
-### Custom Adapter
+### Implementation Details
 
-The `custom_callbacks.py` file contains:
-- `AnthropicAdapter`: Handles format conversion between Anthropic and OpenAI
-- `AdapterLogger`: Provides structured JSON logging
+#### FastAPI Version (`app.py`)
+- Direct control over provider routing
+- Custom header processing for endpoint selection
+- Integrated LiteLLM for format conversion and streaming
+- Structured JSON logging
+
+#### LiteLLM Proxy Version (`custom_callbacks.py`)
+- Configuration-based routing
+- Custom adapter for format conversion
+- Proxy middleware integration
 
 ## Environment Variables
 
